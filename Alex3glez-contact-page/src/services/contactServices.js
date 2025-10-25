@@ -2,7 +2,6 @@ export const getAgendas = async() => {
     try {
         const request= await fetch("https://playground.4geeks.com/contact/agendas?offset=0&limit=100");
         const response = await request.json();
-        console.log(response);
         return response;
     } catch (error) { console.log(error);
     
@@ -15,7 +14,6 @@ export const getAgendas = async() => {
     try {
         const request= await fetch(`https://playground.4geeks.com/contact/agendas/${name}`);
         const response= await request.json();
-        console.log(response);
         return response;
     } catch (error) { console.log(error);
     
@@ -51,6 +49,8 @@ export const getAgendas = async() => {
             throw new error(request.statusText)
         
         }
+
+        return request;
                 
     } catch (error) { throw error;
     
@@ -66,7 +66,7 @@ export const getAgendas = async() => {
                 'content-type': 'application/json'},
             body: JSON.stringify(newContact) 
             })
-            
+            return request;
     } catch (error) { console.log(error);
     
         

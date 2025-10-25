@@ -1,149 +1,90 @@
-import React from 'react';
-import { createAgenda } from '../../services/contactServices';
+import React, { useEffect, useState } from "react";
+import { getAgenda, getAgendas } from "../../services/contactServices";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+import { Link } from "react-router-dom";
 
 const MyNavbar = () => {
+  const [agendas, setAgendas] = useState([]);
+  const { state, dispatch } = useGlobalReducer();
 
+  useEffect(() => {
+    const takeData = async () => {
+      try {
+        const agendasList = await getAgendas();
+        setAgendas(agendasList.agendas || []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    takeData();
+  }, []);
 
-
-  const handleSubmitCreate = (e) => {
-    e.preventDefault();
-    const agendaName = e.target.elements.agendaCreate.value;
+  const selectAgenda = async (e) => {
+    try {
+      dispatch({ type: "selectAgenda", payload: e.target.value });
+      const takeAgenda = await getAgenda(e.target.value);
+      dispatch({ type: "setAgendaData", payload: takeAgenda.contacts });
+      console.log(state.agendaData);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  const handleSubmitDelete = (e) => {
-    e.preventDefault();
-    const agendaName = e.target.elements.agendaDelete.value;
-  };
-
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark p-3">
       <div className="container-fluid">
-        
-    
-        <a className="navbar-brand" href="#">
+        <Link to={"/agendaManaging"} className="navbar-brand" href="#">
           Gestor de Agendas
-        </a>
-
-    
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#mainNavbar" 
-          aria-controls="mainNavbar" 
-          aria-expanded="false" 
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-    
         <div className="collapse navbar-collapse" id="mainNavbar">
-          
-        
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <li className="nav-item me-lg-3">
-              <form className="d-flex align-items-center" onSubmit={handleSubmitCreate}>
-                
-          
-                <input 
-                  className="form-control me-2" 
-                  type="text" 
-                  name="agendaCreate" 
-                  placeholder="Crear Agenda" 
-                  aria-label="Crear Agenda" 
-                  required 
-                />
-                
-          
-                <div className="form-check me-2">
-                  <input 
-                    className="form-check-input" 
-                    type="checkbox" 
-                    id="confirmCreate"
-                    name="confirmCreate"
-                    required
-                  />
-                  <label className="form-check-label text-white text-nowrap" htmlFor="confirmCreate">
-                    Confirmar
-                  </label>
-                </div>
-                
-              
-                <button className="btn btn-success text-nowrap" type="submit">
-                  Crear
-                </button>
-              </form>
-            </li>
-
-            
-            <li className="d-lg-none"><hr className="dropdown-divider" /></li>
-
-         
-            <li className="nav-item mt-2 mt-lg-0">
-              <form className="d-flex align-items-center" onSubmit={handleSubmitDelete}>
-                
-          
-                <input 
-                  className="form-control me-2" 
-                  type="text"
-                  name="agendaDelete"
-                  placeholder="Borrar Agenda" 
-                  aria-label="Borrar Agenda" 
-                  required
-                />
-                
-        
-                <div className="form-check me-2">
-                  <input 
-                    className="form-check-input" 
-                    type="checkbox" 
-                    id="confirmDelete"
-                    name="confirmDelete"
-                    required
-                  />
-                  <label className="form-check-label text-white text-nowrap" htmlFor="confirmDelete">
-                    Confirmar
-                  </label>
-                </div>
-                
-        
-                <button className="btn btn-danger text-nowrap" type="submit">
-                  Borrar
-                </button>
-              </form>
+          <ul className="navbar-nav mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link to={"/"} className="nav-link" href="#">
+                Volver a login
+              </Link>
             </li>
           </ul>
 
-      
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item dropdown">
-              <a 
-                className="nav-link dropdown-toggle" 
-                href="#" 
-                id="navbarDropdown" 
-                role="button" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false"
-              >
-                Seleccionar Agenda
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a className="dropdown-item" href="#">Agenda 1</a></li>
-                <li><a className="dropdown-item" href="#">Agenda 2</a></li>
-                <li><a className="dropdown-item" href="#">Agenda de "alex3glez"</a></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><a className="dropdown-item" href="#">Otra opción</a></li>
-              </ul>
-            </li>
-          </ul>
+          {state.selectedAgenda && (
+            <h1 className="navbar-text text-light  fs-2 m-auto">
+              Agenda: {state.selectedAgenda}
+            </h1>
+          )}
 
-        </div> 
+          <div className="d-flex ms-auto">
+            <select
+              className="form-select"
+              aria-label="Seleccionar Agenda"
+              value={state.selectedAgenda}
+              onChange={selectAgenda}
+            >
+              <option value="" disabled>
+                Cambiar de agenda
+              </option>
+
+              {agendas.map((agenda) => (
+                <option key={agenda.id} value={agenda.slug}>
+                  {agenda.slug}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
     </nav>
   );
-}
+};
 
 export default MyNavbar;

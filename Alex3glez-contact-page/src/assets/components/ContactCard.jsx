@@ -1,12 +1,12 @@
 
-const ContactCard = ({ name, phone, email, address}) => {
+const ContactCard = ({ name, phone, email, address, img}) => {
   return (
     <div className="card mb-3">
       <div className="card-body">
         <div className="row align-items-center">
           <div className="col-md-3 text-center">
             <img 
-              src="/michi_empresario.jpg" 
+              src={img} 
               className="img-fluid rounded-circle" 
               alt={`Foto de perfil de ${name || "Alejandro"}`}
               style={{ width: '100px', height: '100px', objectFit: 'cover' }}
