@@ -1,0 +1,46 @@
+name: Deploy Vite Project to GitHub Pages
+
+# Se activa cada vez que haces 'push' a la rama 'develop'
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+
+# Permisos para que la acción pueda escribir en GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # Puedes cambiar esto a tu versión de Node
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build # Ejecuta el script de compilación
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Sube la carpeta 'dist' que se generó
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
