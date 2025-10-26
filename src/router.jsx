@@ -16,5 +16,8 @@ import AgendaManaging from "./pages/AgendaManaging";
             
 
         </Route>
-    )
+    ),
+    {
+        basename: "/Alex3glez-Contact-Page/"
+    }
 )
