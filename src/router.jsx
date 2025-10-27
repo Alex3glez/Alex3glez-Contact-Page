@@ -11,10 +11,6 @@ import AgendaManaging from "./pages/AgendaManaging";
             <Route path="createContact" element={<CreateContact/>} />
             <Route path="home"  element={<App />}/>
             <Route path="agendaManaging" element={<AgendaManaging/>} />
-
-            
-            
-
         </Route>
     ),
     {

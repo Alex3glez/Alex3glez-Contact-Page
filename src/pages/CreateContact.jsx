@@ -7,9 +7,13 @@ import {
 } from "../services/contactServices";
 import { useGlobalReducer } from "../hooks/useGlobalReducer";
 
+
 const CreateContact = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useGlobalReducer();
+
+
+
 
   useEffect(() => {
     const takeData = async () => {
@@ -20,6 +24,8 @@ const CreateContact = () => {
           type: "setAgendasList",
           payload: agendasList.agendas || [],
         });
+
+
       } catch (error) {
         console.log(error);
       }

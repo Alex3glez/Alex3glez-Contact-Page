@@ -81,7 +81,8 @@ function AgendaManaging() {
       if (agendaName === "") return alert(`Debes introducir algún carácter`);
       const createTheAgenda = await createAgenda(agendaName);
       const agendasList = await getAgendas();
-      const contactList = await getAgenda(state.selectedAgenda);
+      const contactList = await getAgenda(agendaName);
+      console.log(agendasList, contactList)
       dispatch({ type: "setAgendaData", payload: contactList.contacts });
       dispatch({ type: "setAgendasList", payload: agendasList.agendas || [] });
       dispatch({ type: "selectAgenda", payload: agendaName });

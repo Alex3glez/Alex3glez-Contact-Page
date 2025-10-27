@@ -1,29 +1,37 @@
-export const initialState= {
-    agendaData:[],
-    selectedAgenda:"",
-    agendas:[],
-    newContact:{}
-}
+const AGENDA_KEY = "";
 
+export const createInitialState = () => {
+  let almacenAgenda = "";
+
+  almacenAgenda = localStorage.getItem(AGENDA_KEY) || "";
+
+  return {
+    agendaData: [],
+    selectedAgenda: almacenAgenda,
+    agendas: [],
+    newContact: {},
+  };
+};
+
+export const initialState = createInitialState();
 
 export function storeReducer(state, action) {
+  switch (action.type) {
+    case "selectAgenda":
+      localStorage.setItem(AGENDA_KEY, action.payload); // no entiendo la diferencia  (logica) entre setItem y getItem.
 
-    switch (action.type) {
-        case "selectAgenda":
-            return {...state, selectedAgenda: action.payload};
+      return { ...state, selectedAgenda: action.payload };
 
-        case "setAgendaData": 
-            return {...state, agendaData: action.payload};
+    case "setAgendaData":
+      return { ...state, agendaData: action.payload };
 
-        case "setAgendasList": 
-            return {...state, agendas: action.payload};
+    case "setAgendasList":
+      return { ...state, agendas: action.payload };
 
-        case "setNewContact": 
-            return {...state, newContact: action.payload};
-    
-        default:
-           return state;
-    }
-    
+    case "setNewContact":
+      return { ...state, newContact: action.payload };
+
+    default:
+      return state;
+  }
 }
-
