@@ -3,7 +3,7 @@ name: Deploy Vite Project to GitHub Pages
 # Se activa cada vez que haces 'push' a la rama 'develop'
 on:
   push:
-    branches: [ develop ]
+    branches: [ master ]
   workflow_dispatch:
 
 # Permisos para que la acción pueda escribir en GitHub Pages
