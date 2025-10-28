@@ -17,7 +17,7 @@ function AgendaManaging() {
     navigate("/");
   };
 
-   const backToAgenda = () => {
+  const backToAgenda = () => {
     navigate("/home");
   };
 
@@ -86,7 +86,7 @@ function AgendaManaging() {
       const createTheAgenda = await createAgenda(agendaName);
       const agendasList = await getAgendas();
       const contactList = await getAgenda(agendaName);
-      console.log(agendasList, contactList)
+      console.log(agendasList, contactList);
       dispatch({ type: "setAgendaData", payload: contactList.contacts });
       dispatch({ type: "setAgendasList", payload: agendasList.agendas || [] });
       dispatch({ type: "selectAgenda", payload: agendaName });
@@ -97,9 +97,9 @@ function AgendaManaging() {
       e.target.elements.agendaCreate.value = "";
       e.target.elements.confirmCreate.checked = false;
 
-      backToAgenda()
-
-    } catch (error) { alert (error)
+      backToAgenda();
+    } catch (error) {
+      alert(error);
       console.log(error);
     }
   };

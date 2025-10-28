@@ -9,7 +9,6 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
   const { state, dispatch } = useGlobalReducer();
 
   const [isEditing, setIsEditing] = useState(false);
-  
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -35,33 +34,27 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
       ...prevData,
       img: imageUrl,
     }));
-    setIsDropdownOpen(false); 
+    setIsDropdownOpen(false);
   };
 
- 
   const handleSave = async () => {
     try {
-      
       const cheatAdressImg = `${formData.address}||textoparaquenorompaelcodigoyhacersplit10294||${formData.img}`;
 
-      
       const contactToSave = {
-        name: formData.name,       
-        phone: formData.phone,     
-        email: formData.email,     
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
         address: cheatAdressImg,
       };
 
-      
       await updateAgendaContact(state.selectedAgenda, id, contactToSave);
 
-      
       const updatedGlobalContact = {
         ...contactToSave,
-        id: id
+        id: id,
       };
 
-      
       const updatedContacts = state.agendaData.map((contact) =>
         contact.id === id ? updatedGlobalContact : contact
       );
@@ -94,7 +87,6 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     <div className="card mb-3">
       <div className="card-body">
         <div className="row align-items-center">
-          
           <div className="col-md-3 text-center">
             <img
               src={img}
@@ -107,31 +99,65 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
           <div className="col-md-6">
             {isEditing ? (
               <div>
-                
                 <div className="mb-3">
-                  <label htmlFor="nameInput" className="form-label">Nombre:</label>
-                  <input type="text" name="name" id="nameInput" className="form-control rounded-pill shadow-sm" value={formData.name} onChange={handleInputChange}/>
+                  <label htmlFor="nameInput" className="form-label">
+                    Nombre:
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="nameInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="addressInput" className="form-label">Dirección:</label>
-                  <input type="text" name="address" id="addressInput" className="form-control rounded-pill shadow-sm" value={formData.address} onChange={handleInputChange}/>
+                  <label htmlFor="addressInput" className="form-label">
+                    Dirección:
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    id="addressInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="phoneInput" className="form-label">Teléfono:</label>
-                  <input type="tel" name="phone" id="phoneInput" className="form-control rounded-pill shadow-sm" value={formData.phone} onChange={handleInputChange}/>
+                  <label htmlFor="phoneInput" className="form-label">
+                    Teléfono:
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phoneInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="emailInput" className="form-label">Email:</label>
-                  <input type="email" name="email" id="emailInput" className="form-control rounded-pill shadow-sm" value={formData.email} onChange={handleInputChange}/>
+                  <label htmlFor="emailInput" className="form-label">
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="emailInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
                 </div>
 
-              
                 <div className="mb-3">
                   <label htmlFor="imgInput" className="form-label">
                     Url imagen:
                   </label>
-                
-                  <div className="position-relative"> 
+
+                  <div className="position-relative">
                     <div>
                       <input
                         type="url"
@@ -144,25 +170,27 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
                       <button
                         className="btn btn-outline-secondary dropdown-toggle"
                         type="button"
-                        
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
-                       
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       >
                         O selecciona R&M
                       </button>
-                     
-                      <ul 
-                        className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`} 
-                        style={{ maxHeight: '200px', overflowY: 'auto' }}
+
+                      <ul
+                        className={`dropdown-menu dropdown-menu-end ${
+                          isDropdownOpen ? "show" : ""
+                        }`}
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
                       >
-                        {state.rickAndMortyData && state.rickAndMortyData.results ? (
+                        {state.rickAndMortyData &&
+                        state.rickAndMortyData.results ? (
                           state.rickAndMortyData.results.map((character) => (
                             <li key={character.id}>
                               <button
                                 className="dropdown-item d-flex align-items-center"
                                 type="button"
-                                
-                                onClick={() => handleImageSelect(character.image)}
+                                onClick={() =>
+                                  handleImageSelect(character.image)
+                                }
                               >
                                 <img
                                   src={character.image}
@@ -172,24 +200,25 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
                                   className="rounded-circle me-2"
                                   style={{ objectFit: "cover" }}
                                 />
-                                <span className="text-wrap">{character.name}</span>
+                                <span className="text-wrap">
+                                  {character.name}
+                                </span>
                               </button>
                             </li>
                           ))
                         ) : (
                           <li>
-                            <span className="dropdown-item text-muted">Cargando...</span>
+                            <span className="dropdown-item text-muted">
+                              Cargando...
+                            </span>
                           </li>
                         )}
                       </ul>
                     </div>
                   </div>
                 </div>
-                
-
               </div>
             ) : (
-             
               <>
                 <h5 className="card-title mb-3">{name || "Sin nombre"}</h5>
                 <ul className="list-unstyled mb-0">
@@ -210,7 +239,6 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
             )}
           </div>
 
-          
           <div className="col-md-3 text-end">
             {isEditing ? (
               <>

@@ -17,17 +17,13 @@ const App = () => {
       try {
         const data = await getRickAndMortyData();
 
-      await dispatch({type: "setRickAndMortyData", payload: data})
-      /* if (data && data.results) {
+        await dispatch({ type: "setRickAndMortyData", payload: data });
+        /* if (data && data.results) {
         const images = data.results.map((char) => char.image);
 
         setImages(images);
       } */
-     
-      } catch (error) {
-        
-      }
-      
+      } catch (error) {}
     };
     const contactList = async () => {
       const theAgenda = await getAgenda(state.selectedAgenda);
@@ -35,7 +31,6 @@ const App = () => {
     };
     contactList();
     charactersData();
-    
   }, []);
 
   const handleAddContact = () => {
@@ -78,10 +73,18 @@ const App = () => {
                     key={contact.id}
                     id={contact.id}
                     name={contact.name}
-                    address={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[0]}
+                    address={
+                      contact.address.split(
+                        "||textoparaquenorompaelcodigoyhacersplit10294||"
+                      )[0]
+                    }
                     phone={contact.phone}
                     email={contact.email}
-                    img={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[1]/*  || getRandomImage() */}
+                    img={
+                      contact.address.split(
+                        "||textoparaquenorompaelcodigoyhacersplit10294||"
+                      )[1] /*  || getRandomImage() */
+                    }
                   />
                 ))
               )}

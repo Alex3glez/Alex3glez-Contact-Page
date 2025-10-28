@@ -8,15 +8,11 @@ import {
 import { useGlobalReducer } from "../hooks/useGlobalReducer";
 import { getRickAndMortyData } from "../services/ImagesRickAndMorty";
 
-
 const CreateContact = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useGlobalReducer();
-  
-  
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
- 
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const takeData = async () => {
@@ -29,9 +25,8 @@ const CreateContact = () => {
         });
 
         const data = await getRickAndMortyData();
-        
-              await dispatch({type: "setRickAndMortyData", payload: data})
 
+        await dispatch({ type: "setRickAndMortyData", payload: data });
       } catch (error) {
         console.log(error);
       }
@@ -42,12 +37,16 @@ const CreateContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const cheatAdressImg= `${e.target.elements.addressInput.value || undefined}||textoparaquenorompaelcodigoyhacersplit10294||${e.target.elements.imgInput.value}`
+    const cheatAdressImg = `${
+      e.target.elements.addressInput.value || undefined
+    }||textoparaquenorompaelcodigoyhacersplit10294||${
+      e.target.elements.imgInput.value
+    }`;
 
     const newContact = {
       name: e.target.elements.nameInput.value || undefined,
       address: cheatAdressImg,
-      email: e.target.elements.emailInput.value || undefined ,
+      email: e.target.elements.emailInput.value || undefined,
       phone: e.target.elements.phoneInput.value || undefined,
     };
 
@@ -68,7 +67,7 @@ const CreateContact = () => {
       ? alert("¡Contacto añadido!")
       : alert("¡Ups! algo salió mal. Seleccionaste agenda?");
 
-      backToAgenda()
+    backToAgenda();
   };
 
   const selectAgenda = async (e) => {
@@ -82,14 +81,11 @@ const CreateContact = () => {
       console.log(error);
     }
   };
-  
- 
+
   const handleImageSelect = (imageUrl) => {
-   
-    document.getElementById('imgInput').value = imageUrl;
-    setIsDropdownOpen(false); 
+    document.getElementById("imgInput").value = imageUrl;
+    setIsDropdownOpen(false);
   };
-  
 
   const backToAgenda = () => {
     navigate("/home");
@@ -122,7 +118,7 @@ const CreateContact = () => {
           <div className="card shadow-sm border-0">
             <div className="card-body p-4 p-md-5">
               <h2 className="text-center mb-4">Añadir Nuevo Contacto</h2>
-              <form onSubmit={handleSubmit}> 
+              <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="nameInput" className="form-label">
                     Nombre Completo
@@ -172,8 +168,7 @@ const CreateContact = () => {
                     placeholder="Ej: Calle Falsa 123"
                   />
                 </div>
-                
-                
+
                 <div className="mb-3">
                   <label htmlFor="imgInput" className="form-label">
                     Url imagen:
@@ -183,11 +178,9 @@ const CreateContact = () => {
                       <input
                         type="url"
                         name="img"
-                        id="imgInput" 
+                        id="imgInput"
                         className="form-control mb-3"
                         placeholder="Ej: https://mi-imagen.com/foto.png"
-                        
-                        defaultValue="https://wallpapers.com/images/high/troll-pictures-1449-x-900-vjg2ng3cmsgrb3wo.webp"
                       />
                       <button
                         className="btn btn-outline-secondary dropdown-toggle"
@@ -197,17 +190,22 @@ const CreateContact = () => {
                       >
                         O selecciona R&M
                       </button>
-                      <ul 
-                        className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`}
-                        style={{ maxHeight: '200px', overflowY: 'auto' }}
+                      <ul
+                        className={`dropdown-menu dropdown-menu-end ${
+                          isDropdownOpen ? "show" : ""
+                        }`}
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
                       >
-                        {state.rickAndMortyData && state.rickAndMortyData.results ? (
+                        {state.rickAndMortyData &&
+                        state.rickAndMortyData.results ? (
                           state.rickAndMortyData.results.map((character) => (
                             <li key={character.id}>
                               <button
                                 className="dropdown-item d-flex align-items-center"
                                 type="button"
-                                onClick={() => handleImageSelect(character.image)}
+                                onClick={() =>
+                                  handleImageSelect(character.image)
+                                }
                               >
                                 <img
                                   src={character.image}
@@ -217,20 +215,23 @@ const CreateContact = () => {
                                   className="rounded-circle me-2"
                                   style={{ objectFit: "cover" }}
                                 />
-                                <span className="text-wrap">{character.name}</span>
+                                <span className="text-wrap">
+                                  {character.name}
+                                </span>
                               </button>
                             </li>
                           ))
                         ) : (
                           <li>
-                            <span className="dropdown-item text-muted">Cargando...</span>
+                            <span className="dropdown-item text-muted">
+                              Cargando...
+                            </span>
                           </li>
                         )}
                       </ul>
                     </div>
                   </div>
                 </div>
-                
 
                 <hr className="my-4" />
 
