@@ -22,10 +22,10 @@ const App = () => {
       }
     };
     const contactList = async () => {
-      await getAgenda(state.selectedAgenda); //tengo problema cuando tengo seleccionada una agenda con contactos, navegamos a crear una nueva agenda, volvemos a home y no se renderiza de nuevo, siguen los contactos de la agenda anterior
-      dispatch({ type: "setAgendaData", payload: contactList.contacts });
+      const theAgenda = await getAgenda(state.selectedAgenda);
+      dispatch({ type: "setAgendaData", payload: theAgenda.contacts });
     };
-
+    contactList();
     charactersData();
   }, []);
 
@@ -67,6 +67,7 @@ const App = () => {
                 state.agendaData.map((contact) => (
                   <ContactCard
                     key={contact.id}
+                    id={contact.id}
                     name={contact.name}
                     address={contact.address}
                     phone={contact.phone}
