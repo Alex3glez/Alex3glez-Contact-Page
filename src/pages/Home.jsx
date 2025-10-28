@@ -14,12 +14,20 @@ const App = () => {
 
   useEffect(() => {
     const charactersData = async () => {
-      const data = await getRickAndMortyData();
-      if (data && data.results) {
+      try {
+        const data = await getRickAndMortyData();
+
+      await dispatch({type: "setRickAndMortyData", payload: data})
+      /* if (data && data.results) {
         const images = data.results.map((char) => char.image);
 
         setImages(images);
+      } */
+     
+      } catch (error) {
+        
       }
+      
     };
     const contactList = async () => {
       const theAgenda = await getAgenda(state.selectedAgenda);
@@ -27,13 +35,14 @@ const App = () => {
     };
     contactList();
     charactersData();
+    
   }, []);
 
   const handleAddContact = () => {
     navigate("/createContact");
   };
 
-  const getRandomImage = () => {
+  /* const getRandomImage = () => {
     //porque no podemos almacenar imagenes en la API
     if (images.length === 0) {
       return "https://placehold.co/100x100/cccccc/666666?text=Cargando...";
@@ -41,7 +50,7 @@ const App = () => {
 
     const randomNumber = Math.floor(Math.random() * images.length);
     return images[randomNumber];
-  };
+  }; */
 
   return (
     <>
@@ -72,7 +81,7 @@ const App = () => {
                     address={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[0]}
                     phone={contact.phone}
                     email={contact.email}
-                    img={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[1] || getRandomImage()}
+                    img={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[1]/*  || getRandomImage() */}
                   />
                 ))
               )}

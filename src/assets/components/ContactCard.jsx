@@ -9,6 +9,9 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
   const { state, dispatch } = useGlobalReducer();
 
   const [isEditing, setIsEditing] = useState(false);
+  
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: name || "",
@@ -27,25 +30,42 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     }));
   };
 
+  const handleImageSelect = (imageUrl) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      img: imageUrl,
+    }));
+    setIsDropdownOpen(false); 
+  };
+
+ 
   const handleSave = async () => {
     try {
-      const cheatAdressImg = `${formData.address}||textoparaquenorompaelcodigoyhacersplit10294||${formData.img}`;
-      const formDatacheat = {
-        name: name,
-        phone: phone,
-        email: email,
-        address: cheatAdressImg,
-        id: id,
-      };
       
+      const cheatAdressImg = `${formData.address}||textoparaquenorompaelcodigoyhacersplit10294||${formData.img}`;
 
-      await updateAgendaContact(state.selectedAgenda, id, formDatacheat);
+      
+      const contactToSave = {
+        name: formData.name,       
+        phone: formData.phone,     
+        email: formData.email,     
+        address: cheatAdressImg,
+      };
 
+      
+      await updateAgendaContact(state.selectedAgenda, id, contactToSave);
+
+      
+      const updatedGlobalContact = {
+        ...contactToSave,
+        id: id
+      };
+
+      
       const updatedContacts = state.agendaData.map((contact) =>
-        contact.id === id ? formDatacheat : contact
+        contact.id === id ? updatedGlobalContact : contact
       );
       dispatch({ type: "setAgendaData", payload: updatedContacts });
-
 
       setIsEditing(false);
     } catch (error) {
@@ -55,14 +75,12 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
 
   const handleCancel = () => {
     setIsEditing(false);
-
     setFormData({ name, phone, email, address, img, id });
   };
 
   const deleteContact = async () => {
     try {
       await deleteAgendaContact(state.selectedAgenda, id);
-
       const newAgendaData = state.agendaData.filter(
         (contact) => contact.id !== id
       );
@@ -76,6 +94,7 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     <div className="card mb-3">
       <div className="card-body">
         <div className="row align-items-center">
+          
           <div className="col-md-3 text-center">
             <img
               src={img}
@@ -88,76 +107,89 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
           <div className="col-md-6">
             {isEditing ? (
               <div>
+                
                 <div className="mb-3">
-                  <label htmlFor="nameInput" className="form-label">
-                    Nombre:
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="nameInput"
-                    className="form-control rounded-pill shadow-sm"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  />
+                  <label htmlFor="nameInput" className="form-label">Nombre:</label>
+                  <input type="text" name="name" id="nameInput" className="form-control rounded-pill shadow-sm" value={formData.name} onChange={handleInputChange}/>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="addressInput" className="form-label">Dirección:</label>
+                  <input type="text" name="address" id="addressInput" className="form-control rounded-pill shadow-sm" value={formData.address} onChange={handleInputChange}/>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="phoneInput" className="form-label">Teléfono:</label>
+                  <input type="tel" name="phone" id="phoneInput" className="form-control rounded-pill shadow-sm" value={formData.phone} onChange={handleInputChange}/>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="emailInput" className="form-label">Email:</label>
+                  <input type="email" name="email" id="emailInput" className="form-control rounded-pill shadow-sm" value={formData.email} onChange={handleInputChange}/>
                 </div>
 
-                <div className="mb-3">
-                  <label htmlFor="addressInput" className="form-label">
-                    Dirección:
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    id="addressInput"
-                    className="form-control rounded-pill shadow-sm"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="phoneInput" className="form-label">
-                    Teléfono:
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    id="phoneInput"
-                    className="form-control rounded-pill shadow-sm"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="emailInput" className="form-label">
-                    Email:
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    id="emailInput"
-                    className="form-control rounded-pill shadow-sm"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              
                 <div className="mb-3">
                   <label htmlFor="imgInput" className="form-label">
                     Url imagen:
                   </label>
-                  <input
-                    type="url"
-                    name="img"
-                    id="imgInput"
-                    className="form-control rounded-pill shadow-sm"
-                    value={formData.img}
-                    onChange={handleInputChange}
-                  />
+                
+                  <div className="position-relative"> 
+                    <div>
+                      <input
+                        type="url"
+                        name="img"
+                        id="imgInput"
+                        className="form-control rounded-pill shadow-sm mb-3"
+                        value={formData.img}
+                        onChange={handleInputChange}
+                      />
+                      <button
+                        className="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
+                       
+                      >
+                        O selecciona R&M
+                      </button>
+                     
+                      <ul 
+                        className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`} 
+                        style={{ maxHeight: '200px', overflowY: 'auto' }}
+                      >
+                        {state.rickAndMortyData && state.rickAndMortyData.results ? (
+                          state.rickAndMortyData.results.map((character) => (
+                            <li key={character.id}>
+                              <button
+                                className="dropdown-item d-flex align-items-center"
+                                type="button"
+                                
+                                onClick={() => handleImageSelect(character.image)}
+                              >
+                                <img
+                                  src={character.image}
+                                  alt={character.name}
+                                  width="30"
+                                  height="30"
+                                  className="rounded-circle me-2"
+                                  style={{ objectFit: "cover" }}
+                                />
+                                <span className="text-wrap">{character.name}</span>
+                              </button>
+                            </li>
+                          ))
+                        ) : (
+                          <li>
+                            <span className="dropdown-item text-muted">Cargando...</span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
+                
+
               </div>
             ) : (
+             
               <>
                 <h5 className="card-title mb-3">{name || "Sin nombre"}</h5>
                 <ul className="list-unstyled mb-0">
@@ -178,6 +210,7 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
             )}
           </div>
 
+          
           <div className="col-md-3 text-end">
             {isEditing ? (
               <>

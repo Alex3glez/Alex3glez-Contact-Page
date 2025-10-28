@@ -10,6 +10,7 @@ export const createInitialState = () => {
     selectedAgenda: almacenAgenda,
     agendas: [],
     newContact: {},
+    rickAndMortyData: [],
   };
 };
 
@@ -30,6 +31,9 @@ export function storeReducer(state, action) {
 
     case "setNewContact":
       return { ...state, newContact: action.payload };
+
+      case "setRickAndMortyData":
+        return { ...state, rickAndMortyData: action.payload }
 
     default:
       return state;
