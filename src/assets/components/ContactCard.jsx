@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
-import { 
-  deleteAgendaContact, 
-  updateAgendaContact
+import {
+  deleteAgendaContact,
+  updateAgendaContact,
 } from "../../services/contactServices";
 
 const ContactCard = ({ name, phone, email, address, img, id }) => {
@@ -15,7 +15,7 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     phone: phone || "",
     email: email || "",
     address: address || "",
-    img: img,
+    img: img || "",
     id: id,
   });
 
@@ -27,15 +27,25 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     }));
   };
 
-  
   const handleSave = async () => {
     try {
-      await updateAgendaContact(state.selectedAgenda, id, formData);
+      const cheatAdressImg = `${formData.address}||textoparaquenorompaelcodigoyhacersplit10294||${formData.img}`;
+      const formDatacheat = {
+        name: name,
+        phone: phone,
+        email: email,
+        address: cheatAdressImg,
+        id: id,
+      };
+      
+
+      await updateAgendaContact(state.selectedAgenda, id, formDatacheat);
 
       const updatedContacts = state.agendaData.map((contact) =>
-        contact.id === id ? formData : contact
+        contact.id === id ? formDatacheat : contact
       );
       dispatch({ type: "setAgendaData", payload: updatedContacts });
+
 
       setIsEditing(false);
     } catch (error) {
@@ -43,18 +53,16 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     }
   };
 
- 
   const handleCancel = () => {
-   
     setIsEditing(false);
-    
+
     setFormData({ name, phone, email, address, img, id });
   };
 
   const deleteContact = async () => {
     try {
       await deleteAgendaContact(state.selectedAgenda, id);
-      
+
       const newAgendaData = state.agendaData.filter(
         (contact) => contact.id !== id
       );
@@ -68,7 +76,6 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     <div className="card mb-3">
       <div className="card-body">
         <div className="row align-items-center">
-          
           <div className="col-md-3 text-center">
             <img
               src={img}
@@ -79,61 +86,77 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
           </div>
 
           <div className="col-md-6">
-  {isEditing ? (
-    
-    <div>
-      
-      <div className="mb-3">
-        <label htmlFor="nameInput" className="form-label">Nombre:</label>
-        <input
-          type="text"
-          name="name"
-          id="nameInput" 
-          className="form-control rounded-pill shadow-sm" 
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-      </div>
+            {isEditing ? (
+              <div>
+                <div className="mb-3">
+                  <label htmlFor="nameInput" className="form-label">
+                    Nombre:
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="nameInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-    
-      <div className="mb-3">
-        <label htmlFor="addressInput" className="form-label">Dirección:</label>
-        <input
-          type="text"
-          name="address"
-          id="addressInput"
-          className="form-control rounded-pill shadow-sm"
-          value={formData.address}
-          onChange={handleInputChange}
-        />
-      </div>
+                <div className="mb-3">
+                  <label htmlFor="addressInput" className="form-label">
+                    Dirección:
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    id="addressInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-    
-      <div className="mb-3">
-        <label htmlFor="phoneInput" className="form-label">Teléfono:</label>
-        <input
-          type="tel"
-          name="phone"
-          id="phoneInput"
-          className="form-control rounded-pill shadow-sm"
-          value={formData.phone}
-          onChange={handleInputChange}
-        />
-      </div>
+                <div className="mb-3">
+                  <label htmlFor="phoneInput" className="form-label">
+                    Teléfono:
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    id="phoneInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                </div>
 
-      <div className="mb-3">
-        <label htmlFor="emailInput" className="form-label">Email:</label>
-        <input
-          type="email"
-          name="email"
-          id="emailInput"
-          className="form-control rounded-pill shadow-sm"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-      </div>
-
-    </div>
+                <div className="mb-3">
+                  <label htmlFor="emailInput" className="form-label">
+                    Email:
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="emailInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="imgInput" className="form-label">
+                    Url imagen:
+                  </label>
+                  <input
+                    type="url"
+                    name="img"
+                    id="imgInput"
+                    className="form-control rounded-pill shadow-sm"
+                    value={formData.img}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
             ) : (
               <>
                 <h5 className="card-title mb-3">{name || "Sin nombre"}</h5>
@@ -155,10 +178,8 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
             )}
           </div>
 
-      
           <div className="col-md-3 text-end">
             {isEditing ? (
-              
               <>
                 <button
                   onClick={handleSave}
@@ -174,7 +195,6 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
                 </button>
               </>
             ) : (
-            
               <>
                 <button
                   onClick={() => setIsEditing(true)}

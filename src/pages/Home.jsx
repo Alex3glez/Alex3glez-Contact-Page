@@ -69,10 +69,10 @@ const App = () => {
                     key={contact.id}
                     id={contact.id}
                     name={contact.name}
-                    address={contact.address}
+                    address={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[0]}
                     phone={contact.phone}
                     email={contact.email}
-                    img={getRandomImage()}
+                    img={contact.address.split("||textoparaquenorompaelcodigoyhacersplit10294||")[1] || getRandomImage()}
                   />
                 ))
               )}

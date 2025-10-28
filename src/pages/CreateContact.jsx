@@ -36,10 +36,12 @@ const CreateContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const cheatAdressImg= `${e.target.elements.addressInput.value || undefined}||textoparaquenorompaelcodigoyhacersplit10294||${e.target.elements.imgInput.value || undefined}`
+
     const newContact = {
       name: e.target.elements.nameInput.value || undefined,
-      address: e.target.elements.addressInput.value || undefined,
-      email: e.target.elements.emailInput.value || undefined,
+      address: cheatAdressImg,
+      email:  e.target.elements.emailInput.value || undefined,
       phone: e.target.elements.phoneInput.value || undefined,
     };
 
@@ -106,7 +108,7 @@ const CreateContact = () => {
           <div className="card shadow-sm border-0">
             <div className="card-body p-4 p-md-5">
               <h2 className="text-center mb-4">Añadir Nuevo Contacto</h2>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}> 
                 <div className="mb-3">
                   <label htmlFor="nameInput" className="form-label">
                     Nombre Completo
@@ -156,6 +158,20 @@ const CreateContact = () => {
                     placeholder="Ej: Calle Falsa 123"
                   />
                 </div>
+
+               
+                <div className="mb-3">
+                  <label htmlFor="imgInput" className="form-label">
+                    URL de Imagen
+                  </label>
+                  <input
+                    type="url"
+                    className="form-control"
+                    id="imgInput"
+                    placeholder="Ej: https://mi-imagen.com/foto.png"
+                  />
+                </div>
+                
 
                 <hr className="my-4" />
 
