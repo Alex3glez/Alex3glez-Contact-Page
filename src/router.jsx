@@ -17,7 +17,4 @@ export const router = createBrowserRouter(
       <Route path="agendaManaging" element={<AgendaManaging />} />
     </Route>
   ),
-  {
-    basename: "/Alex3glez-Contact-Page/",
-  }
 );
