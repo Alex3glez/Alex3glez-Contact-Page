@@ -59,6 +59,8 @@ const CreateContact = () => {
     createNewContact.ok
       ? alert("¡Contacto añadido!")
       : alert("¡Ups! algo salió mal. Seleccionaste agenda?");
+
+      backToAgenda()
   };
 
   const selectAgenda = async (e) => {

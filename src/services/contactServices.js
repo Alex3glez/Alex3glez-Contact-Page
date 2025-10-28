@@ -2,8 +2,15 @@ export const getAgendas = async() => {
     try {
         const request= await fetch("https://playground.4geeks.com/contact/agendas?offset=0&limit=100");
         const response = await request.json();
+
+        if (!request.ok) {
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
+        
+        }
+
         return response;
-    } catch (error) { console.log(error);
+    } catch (error) { throw error;
     
         
     }
@@ -14,8 +21,18 @@ export const getAgendas = async() => {
     try {
         const request= await fetch(`https://playground.4geeks.com/contact/agendas/${name}`);
         const response= await request.json();
+
+        if (!request.ok) {
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
+        
+        }
+
         return response;
-    } catch (error) { console.log(error);
+
+
+    } catch (error) { throw error;
+    ;
     
         
     }
@@ -28,7 +45,8 @@ export const getAgendas = async() => {
             headers: {'accept': 'application/json'}}
         )
         if (!request.ok) {
-            throw new error(request.statusText)
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
         
         }
                 
@@ -46,7 +64,8 @@ export const getAgendas = async() => {
             body:""
         })
         if (!request.ok) {
-            throw new error(request.statusText)
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
         
         }
 
@@ -66,8 +85,14 @@ export const getAgendas = async() => {
                 'content-type': 'application/json'},
             body: JSON.stringify(newContact) 
             })
+
+            if (!request.ok) {
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
+        
+        }
             return request;
-    } catch (error) { console.log(error);
+    } catch (error) { throw error;
     
         
     }
@@ -83,9 +108,14 @@ export const getAgendas = async() => {
                 body: JSON.stringify(contactUpdates)//si en el objeto contactUpdates existe algúna propiedad undefined, con stringify no se incluye por lo que en la api se queda el valor anterior.
             }
         )
-        const response = await request.json();
-        console.log(response)
-    } catch (error) {
+
+        if (!request.ok) {
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
+        
+        }
+        
+    } catch (error) {throw error;
         
     }
   }
@@ -97,7 +127,8 @@ export const getAgendas = async() => {
             headers: {'accept': 'application/json'}
         })
         if (!request.ok) {
-            throw new error(request.statusText)
+            const errorData = await request.json();
+            throw new Error(errorData.detail)
         
         }
     } catch (error) { throw error;

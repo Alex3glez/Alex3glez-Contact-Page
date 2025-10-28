@@ -17,6 +17,10 @@ function AgendaManaging() {
     navigate("/");
   };
 
+   const backToAgenda = () => {
+    navigate("/home");
+  };
+
   useEffect(() => {
     const takeData = async () => {
       try {
@@ -92,7 +96,10 @@ function AgendaManaging() {
 
       e.target.elements.agendaCreate.value = "";
       e.target.elements.confirmCreate.checked = false;
-    } catch (error) {
+
+      backToAgenda()
+
+    } catch (error) { alert (error)
       console.log(error);
     }
   };
@@ -151,7 +158,7 @@ function AgendaManaging() {
                 Selecciona la agenda a borrar
               </label>
               <select
-                className="form-select"
+                className="form-select "
                 aria-label="Seleccionar Agenda"
                 name="agendaDelete"
                 value={state.selectedAgenda}

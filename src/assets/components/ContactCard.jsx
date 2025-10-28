@@ -15,7 +15,7 @@ const ContactCard = ({ name, phone, email, address, img, id }) => {
     phone: phone || "",
     email: email || "",
     address: address || "",
-    img: img || "",
+    img: img,
     id: id,
   });
 
